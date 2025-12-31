@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cosmetics - Seaton Sands Tools</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body data-page="cosmetics">
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <h1>Cosmetics — Sheet naar tabel</h1>
+        <p>Plak de mechanic sheet tekst, klik “Zet om naar tabel”.</p>
+        <div class="flex">
+          <a class="badge" href="index.html">← Home</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Input</h2>
+      <textarea id="sheetInput" placeholder="Plak hier je sheet..."></textarea>
+      <div class="btns">
+        <button class="primary" id="toTable">Zet om naar tabel</button>
+        <button class="danger" id="resetCosmetics">Reset</button>
+      </div>
+      <p class="note">
+        Parsing: split op komma’s, links van “-” is onderdeel, tussen [ ] is optie.
+      </p>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">Aantal items</div>
+          <div class="value" id="countItems">0</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Totaal (alles)</div>
+          <div class="value" id="totalPrice">€ 0</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Toegepast (vinkjes)</div>
+          <div class="value" id="appliedCount">0 / 0</div>
+          <div class="small">Bedrag toegepast: <span id="appliedAmount">€ 0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px;align-items:start">
+      <div class="panel">
+        <h2>Tabel</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width:60px">✓</th>
+              <th>Onderdeel</th>
+              <th>Optie</th>
+              <th>Categorie</th>
+              <th style="width:130px">Prijs</th>
+            </tr>
+          </thead>
+          <tbody id="cosmeticsRows"></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2>Optie (lijst)</h2>
+        <div id="optionList" style="border:1px solid var(--border);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.02)"></div>
+        <p class="note" style="margin-top:10px">
+          Dit is handig zodat je snel ziet “wat je moet selecteren”, zoals je screenshot 5.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden-admin" title="admin"></div>
+  <script src="app.js"></script>
+</body>
+</html>

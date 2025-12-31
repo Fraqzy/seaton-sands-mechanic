@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Materials - Seaton Sands Tools</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body data-page="materials">
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <h1>Inkoop — Berekentool</h1>
+        <p>Vul aantallen in per item. Alle prijzen in EUR per stuk.</p>
+        <div class="flex">
+          <a class="badge" href="index.html">← Home</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="flex" style="justify-content:space-between">
+        <h2>Aankoop materialen</h2>
+        <label class="checkbox">
+          <input id="bulkToggle" type="checkbox"/>
+          <span>Bulk toeslag</span>
+        </label>
+      </div>
+      <div id="bulkInfo" class="note"></div>
+
+      <hr/>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:45%">Item</th>
+            <th style="width:30%">Aantal</th>
+            <th style="width:25%">Prijs</th>
+          </tr>
+        </thead>
+        <tbody id="materialsRows"></tbody>
+      </table>
+
+      <div class="btns">
+        <button class="danger" id="resetMaterials">Reset aankoop</button>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <h2>Totaal</h2>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">Bedrag totaal</div>
+          <div class="value" id="totalAmount">€ 0</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Bulk toeslag</div>
+          <div class="value" id="bulkAmount">€ 0</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Aantal totaal</div>
+          <div class="value" id="totalQty">0</div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:10px">
+        Bulk toeslag: als aan staat, telt hij <b>+€5 per stuk</b> zodra <b>het aantal van één materiaal &gt; 1000</b> is (instelbaar in admin).
+      </p>
+    </div>
+  </div>
+
+  <div class="hidden-admin" title="admin"></div>
+  <script src="app.js"></script>
+</body>
+</html>

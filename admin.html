@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin - Seaton Sands Tools</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body data-page="admin">
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <h1>Admin</h1>
+        <p>Pas prijzen, bulk regels, sheet mappings en extra checkmarks aan.</p>
+        <div class="flex">
+          <a class="badge" href="index.html">← Home</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Beveiliging</h2>
+      <div class="row">
+        <div>
+          <div class="small">Admin code (exact 3 cijfers)</div>
+          <input id="adminCode" type="text" inputmode="numeric" maxlength="3" placeholder="123"/>
+        </div>
+      </div>
+      <hr/>
+
+      <h2>Materials instellingen</h2>
+      <div class="row">
+        <div>
+          <div class="small">Bulk threshold</div>
+          <input id="bulkThreshold" type="number" min="0" step="1"/>
+        </div>
+        <div>
+          <div class="small">Bulk +€/stuk</div>
+          <input id="bulkAdd" type="number" min="0" step="1"/>
+        </div>
+        <div class="checkbox">
+          <input id="bulkDefault" type="checkbox"/>
+          <span>Bulk standaard aan</span>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="small">Materials JSON (array van {key, price})</div>
+        <textarea id="matJson"></textarea>
+      </div>
+
+      <hr/>
+
+      <h2>Cosmetics instellingen</h2>
+      <div class="row">
+        <div>
+          <div class="small">Base prijs per sheet-item</div>
+          <input id="baseCosPrice" type="number" min="0" step="50"/>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="small">Always options (extra checkmarks) JSON (array)</div>
+        <textarea id="alwaysJson"></textarea>
+        <p class="note">
+          Voorbeeld item: {"name":"Fully tune","price":30000,"category":"Performance","enabled":true}
+        </p>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="small">Category map JSON (object: "Onderdeel" → "Categorie")</div>
+        <textarea id="mapJson"></textarea>
+      </div>
+
+      <div class="btns">
+        <button class="primary" id="saveAdmin">Opslaan</button>
+        <button class="danger" id="resetAll">Reset alles (defaults)</button>
+      </div>
+
+      <p class="note">
+        Tip: voeg gewoon nieuwe keys toe in categoryMap wanneer je een nieuw onderdeel ziet in de sheet.
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
