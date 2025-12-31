@@ -205,3 +205,31 @@ tr.done td:first-child, tr.done td:nth-child(2){text-decoration:none} /* checkbo
 .scrollbox::-webkit-scrollbar-thumb:hover{
   background: linear-gradient(180deg, #ffb84d, #d8922e);
 }
+
+/* Mooie scrollbar voor textarea (Input) */
+
+/* Firefox */
+textarea{
+  scrollbar-width: thin;
+  scrollbar-color: #c9822b #1c1c1c;
+}
+
+/* Chrome / Edge / Safari */
+textarea::-webkit-scrollbar{
+  width: 10px;
+}
+
+textarea::-webkit-scrollbar-track{
+  background: #1c1c1c;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, #f0a23a, #c9822b);
+  border-radius: 10px;
+  border: 2px solid #1c1c1c;
+}
+
+textarea::-webkit-scrollbar-thumb:hover{
+  background: linear-gradient(180deg, #ffb84d, #d8922e);
+}
