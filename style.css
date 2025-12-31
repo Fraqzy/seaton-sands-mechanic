@@ -178,3 +178,37 @@ tr.done td:first-child, tr.done td:nth-child(2){text-decoration:none} /* checkbo
   background:#151515;border:1px solid var(--border);cursor:pointer;
 }
 .favBtn.on{background:rgba(211,131,47,.18);border-color:rgba(211,131,47,.45)}
+
+/* Mooie scrollbar voor extra opties */
+.extra-options-table {
+  scrollbar-width: thin;               /* Firefox */
+  scrollbar-color: #c9822b #1c1c1c;     /* thumb / track */
+}
+
+/* Chrome, Edge, Safari */
+.extra-options-table::-webkit-scrollbar {
+  width: 10px;
+}
+
+.extra-options-table::-webkit-scrollbar-track {
+  background: #1c1c1c;
+  border-radius: 10px;
+}
+
+.extra-options-table::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #f0a23a,
+    #c9822b
+  );
+  border-radius: 10px;
+  border: 2px solid #1c1c1c;
+}
+
+.extra-options-table::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #ffb84d,
+    #d8922e
+  );
+}
