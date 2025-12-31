@@ -10,6 +10,7 @@
   <div class="container">
     <div class="header">
       <div class="brand">
+        <img src="assets/logo.png" alt="Seaton Sands" />
         <h1>Inkoop — Berekentool</h1>
         <p>Vul aantallen in per item. Alle prijzen in EUR per stuk.</p>
         <div class="flex">
@@ -21,12 +22,19 @@
     <div class="panel">
       <div class="flex" style="justify-content:space-between">
         <h2>Aankoop materialen</h2>
+        <div class="flex">
         <label class="checkbox">
           <input id="bulkToggle" type="checkbox"/>
           <span>Bulk toeslag</span>
         </label>
+        <label class="checkbox">
+          <input id="pawnshopToggle" type="checkbox"/>
+          <span>Pawnshop inkopen</span>
+        </label>
+        </div>
       </div>
       <div id="bulkInfo" class="note"></div>
+      <div id="pawnInfo" class="note"></div>
 
       <hr/>
 

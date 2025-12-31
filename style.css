@@ -13,7 +13,10 @@
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;
-  background:radial-gradient(1200px 800px at 50% -10%, #1a1a1a, var(--bg));
+  background: radial-gradient(1200px 800px at 50% -10%, rgba(26,26,26,.92), rgba(17,17,17,.98)), url('assets/background.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
   color:var(--text);
 }
 a{color:inherit;text-decoration:none}
@@ -151,3 +154,27 @@ hr{border:none;border-top:1px solid var(--border);margin:18px 0}
 /* Scroll area for long tables (e.g., Extra opties) */
 .scrollbox{max-height:320px;overflow:auto;border:1px solid var(--border);border-radius:12px}
 .scrollbox .table{border-radius:0}
+
+
+.brand img{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.55));margin-bottom:6px}
+@media (max-width:900px){.brand img{width:78px;height:78px}}
+
+.table input[type="checkbox"]{transform:scale(1.4);cursor:pointer}
+tr.done td{color:rgba(255,255,255,.55);text-decoration:line-through;background:rgba(0,0,0,.08)}
+tr.done td:first-child, tr.done td:nth-child(2){text-decoration:none} /* checkbox + fav columns */
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0 0}
+.chip{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:6px 10px;border-radius:999px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  color:var(--text);font-size:12px
+}
+.chip .muted{color:var(--muted)}
+.favBtn{
+  width:34px;height:34px;border-radius:10px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:#151515;border:1px solid var(--border);cursor:pointer;
+}
+.favBtn.on{background:rgba(211,131,47,.18);border-color:rgba(211,131,47,.45)}

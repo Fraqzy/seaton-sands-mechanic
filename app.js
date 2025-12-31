@@ -26,6 +26,8 @@ const DEFAULTS = {
     basePricePerItem: 400,
 
     // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
+    favoriteExtras: [],
+
     extraOptions: [
       { name: "Fully tune", price: 30000, category: "Performance", enabled: true },
       { name: "Raceharnas", price: 6000, category: "Safety", enabled: true }
@@ -109,12 +111,23 @@ function initMaterials(){
 
   const bulkToggle = document.getElementById("bulkToggle");
   const bulkInfo = document.getElementById("bulkInfo");
+  const pawnToggle = document.getElementById("pawnshopToggle");
+  const pawnInfo = document.getElementById("pawnInfo");
   const rows = document.getElementById("materialsRows");
   const totalAmountEl = document.getElementById("totalAmount");
   const bulkAmountEl = document.getElementById("bulkAmount");
   const totalQtyEl = document.getElementById("totalQty");
 
   bulkToggle.checked = !!state.bulk.enabledDefault;
+  pawnToggle.checked = false;
+
+  const PAWNSHOP_SET = new Set([
+    'Ijzer','Staal','Aluminium','Rubber','Elektronisch Schroot','Car parts','Craft parts'
+  ]);
+  function unitPrice(m){
+    if(pawnToggle.checked && PAWNSHOP_SET.has(m.key)) return 25;
+    return m.price;
+  }
 
   function render(){
     rows.innerHTML = "";
@@ -123,7 +136,7 @@ function initMaterials(){
       tr.innerHTML = `
         <td>
           <div><b>${m.key}</b></div>
-          <div class="small">${eur(m.price)} / stuk</div>
+          <div class="small">${eur(unitPrice(m))} / stuk</div>
         </td>
         <td><input type="number" min="0" step="1" value="0" data-idx="${idx}" /></td>
         <td class="priceCell" data-idx="${idx}">${eur(0)}</td>
@@ -139,6 +152,10 @@ function initMaterials(){
       ? `Bulk aan: +${eur(state.bulk.addPerPiece)} per stuk zodra aantal > ${state.bulk.threshold}`
       : `Bulk uit`;
 
+    pawnInfo.textContent = pawnToggle.checked
+      ? 'Pawnshop inkopen: Ijzer/Staal/Aluminium/Rubber/E-Schroot/Car & Craft parts = €25/stuk'
+      : '';
+
     let total = 0;
     let totalQty = 0;
     let bulkExtra = 0;
@@ -148,7 +165,7 @@ function initMaterials(){
       const qty = Math.max(0, Number(input.value||0));
       totalQty += qty;
 
-      const base = qty * state.materials[idx].price;
+      const base = qty * unitPrice(state.materials[idx]);
       let extra = 0;
       if(bulkOn && qty > state.bulk.threshold){
         extra = qty * state.bulk.addPerPiece;
@@ -171,6 +188,7 @@ function initMaterials(){
     if(e.target && e.target.matches("input[type=number]")) calculate();
   });
   bulkToggle.addEventListener("change", calculate);
+  pawnToggle.addEventListener("change", ()=>{ render(); });
 
   document.getElementById("resetMaterials").addEventListener("click", ()=>{
     rows.querySelectorAll("input[type=number]").forEach(i=>i.value=0);
@@ -216,6 +234,7 @@ function initCosmetics(){
   const totalEl = document.getElementById("totalPrice");
   const appliedEl = document.getElementById("appliedCount");
   const appliedAmountEl = document.getElementById("appliedAmount");
+  const catSummaryEl = document.getElementById("categorySummary");
 
   // KPIs (extras)
   const extrasAppliedEl = document.getElementById("extrasApplied");
@@ -230,7 +249,34 @@ function initCosmetics(){
   let sheetRows = [];   // {label, option, category, price, checked}
   let extraRows = [];   // {name, category, price, checked}
 
-  function loadExtras(keepChecks = true){
+  
+
+  function isFav(name){
+    return (state.cosmetics.favoriteExtras || []).includes(name);
+  }
+  function toggleFav(name){
+    const cur = new Set(state.cosmetics.favoriteExtras || []);
+    if(cur.has(name)) cur.delete(name); else cur.add(name);
+    state.cosmetics.favoriteExtras = Array.from(cur);
+    saveState(state);
+  }
+  function sortExtras(){
+    extraRows.sort((a,b)=>{
+      const fa = isFav(a.name) ? 0 : 1;
+      const fb = isFav(b.name) ? 0 : 1;
+      if(fa != fb) return fa - fb;
+      const ca = (a.category || "").toLowerCase();
+      const cb = (b.category || "").toLowerCase();
+      if(ca < cb) return -1;
+      if(ca > cb) return 1;
+      const na = (a.name || "").toLowerCase();
+      const nb = (b.name || "").toLowerCase();
+      if(na < nb) return -1;
+      if(na > nb) return 1;
+      return 0;
+    });
+  }
+function loadExtras(keepChecks = true){
     const prev = new Map();
     if(keepChecks){
       for(const r of extraRows) prev.set(r.name, !!r.checked);
@@ -243,12 +289,14 @@ function initCosmetics(){
         price: Number(o.price || 0),
         checked: prev.get(o.name) ?? false
       }));
+  sortExtras();
   }
 
   function rebuildSheet(){
     tableBody.innerHTML = "";
     sheetRows.forEach((r, idx)=>{
       const tr = document.createElement("tr");
+      if(r.checked) tr.classList.add("done");
       tr.innerHTML = `
         <td><input type="checkbox" data-idx="${idx}" ${r.checked ? "checked":""}></td>
         <td><b>${escapeHtml(r.label)}</b></td>
@@ -263,8 +311,10 @@ function initCosmetics(){
     extrasBody.innerHTML = "";
     extraRows.forEach((r, idx)=>{
       const tr = document.createElement("tr");
+      const favOn = isFav(r.name);
       tr.innerHTML = `
         <td><input type="checkbox" data-xidx="${idx}" ${r.checked ? "checked":""}></td>
+        <td><button class="favBtn ${favOn ? "on":""}" data-fav="${idx}" title="Favoriet">${favOn ? "★":"☆"}</button></td>
         <td><b>${escapeHtml(r.name)}</b></td>
         <td>${escapeHtml(r.category || "Extra")}</td>
         <td>${eur(r.price)}</td>
@@ -300,11 +350,30 @@ function initCosmetics(){
 
     countEl.textContent = String(count);
     totalEl.textContent = eur(total);
-    appliedEl.textContent = `${applied} / ${count}`;
-    appliedAmountEl.textContent = eur(appliedAmount);
+    if(appliedEl) appliedEl.textContent = `${applied} / ${count}`;
+    if(appliedAmountEl) appliedAmountEl.textContent = eur(appliedAmount);
 
     extrasAppliedEl.textContent = `${extrasApplied} / ${extraRows.length}`;
     extrasAmountEl.textContent = eur(extrasAmount);
+
+    // Categorie-overzicht (open/total)
+    if(catSummaryEl){
+      const counts = new Map();
+      for(const r of sheetRows){
+        const cat = r.category || "Onbekend";
+        const cur = counts.get(cat) || {total:0, open:0};
+        cur.total += 1;
+        if(!r.checked) cur.open += 1;
+        counts.set(cat, cur);
+      }
+      const cats = Array.from(counts.keys()).sort((a,b)=>a.localeCompare(b,'nl',{sensitivity:'base'}));
+      catSummaryEl.innerHTML = cats.length
+        ? cats.map(cat=>{
+            const v = counts.get(cat);
+            return `<span class="chip"><b>${escapeHtml(cat)}</b><span class="muted">${v.open}/${v.total}</span></span>`;
+          }).join("")
+        : '<span class="small">Nog geen sheet omgezet.</span>';
+    }
 
     grandTotalEl.textContent = eur(total + extrasAmount);
   }
@@ -347,6 +416,19 @@ function initCosmetics(){
     if(cb && cb.matches('input[type="checkbox"][data-idx]')){
       const idx = Number(cb.dataset.idx);
       sheetRows[idx].checked = cb.checked;
+      updateTotals();
+    }
+  });
+
+  extrasBody.addEventListener("click", (e)=>{
+    const btn = e.target;
+    if(btn && btn.matches("button.favBtn")){
+      const idx = Number(btn.dataset.fav);
+      const name = extraRows[idx]?.name;
+      if(!name) return;
+      toggleFav(name);
+      loadExtras(true);
+      rebuildExtras();
       updateTotals();
     }
   });
