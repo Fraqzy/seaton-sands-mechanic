@@ -8,12 +8,12 @@ const DEFAULTS = {
     { key: "Car parts", price: 25 },
     { key: "Craft parts", price: 25 },
     { key: "Elektronisch Schroot", price: 25 },
-    { key: "Ijzer", price: 20 },
+    { key: "Ijzer", price: 25 },
     { key: "Metaalschroot", price: 25 },
     { key: "Rubber", price: 25 },
-    { key: "Staal", price: 20 },
-    { key: "Koper", price: 20 },
-    { key: "Plastic", price: 20 }
+    { key: "Staal", price: 25 },
+    { key: "Koper", price: 15 },
+    { key: "Plastic", price: 15 }
   ],
   bulk: {
     enabledDefault: false,
