@@ -31,47 +31,69 @@
     </div>
 
     <div class="panel" style="margin-top:16px">
+      <h2>Totaal</h2>
       <div class="kpis">
         <div class="kpi">
-          <div class="label">Aantal items</div>
+          <div class="label">Aantal items (sheet)</div>
           <div class="value" id="countItems">0</div>
         </div>
         <div class="kpi">
-          <div class="label">Totaal (alles)</div>
+          <div class="label">Totaal (sheet)</div>
           <div class="value" id="totalPrice">€ 0</div>
         </div>
         <div class="kpi">
-          <div class="label">Toegepast (vinkjes)</div>
+          <div class="label">Toegepast (vinkjes sheet)</div>
           <div class="value" id="appliedCount">0 / 0</div>
           <div class="small">Bedrag toegepast: <span id="appliedAmount">€ 0</span></div>
         </div>
       </div>
+
+      <div class="kpis" style="margin-top:12px">
+        <div class="kpi">
+          <div class="label">Extra opties</div>
+          <div class="value" id="extrasApplied">0 / 0</div>
+          <div class="small">Bedrag extra: <span id="extrasAmount">€ 0</span></div>
+        </div>
+        <div class="kpi">
+          <div class="label">Grand total (sheet + extra)</div>
+          <div class="value" id="grandTotal">€ 0</div>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:10px">
+        Fully tune / Raceharnas tellen <b>alleen mee als je ze aanvinkt</b> in de extra tabel.
+      </p>
     </div>
 
-    <div class="grid2" style="margin-top:16px;align-items:start">
-      <div class="panel">
-        <h2>Tabel</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th style="width:60px">✓</th>
-              <th>Onderdeel</th>
-              <th>Optie</th>
-              <th>Categorie</th>
-              <th style="width:130px">Prijs</th>
-            </tr>
-          </thead>
-          <tbody id="cosmeticsRows"></tbody>
-        </table>
-      </div>
+    <div class="panel" style="margin-top:16px">
+      <h2>Tabel</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:60px">✓</th>
+            <th>Onderdeel</th>
+            <th>Optie</th>
+            <th>Categorie</th>
+            <th style="width:130px">Prijs</th>
+          </tr>
+        </thead>
+        <tbody id="cosmeticsRows"></tbody>
+      </table>
+    </div>
 
-      <div class="panel">
-        <h2>Optie (lijst)</h2>
-        <div id="optionList" style="border:1px solid var(--border);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.02)"></div>
-        <p class="note" style="margin-top:10px">
-          Dit is handig zodat je snel ziet “wat je moet selecteren”, zoals je screenshot 5.
-        </p>
-      </div>
+    <div class="panel" style="margin-top:16px">
+      <h2>Extra opties</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:60px">✓</th>
+            <th>Optie</th>
+            <th>Categorie</th>
+            <th style="width:130px">Prijs</th>
+          </tr>
+        </thead>
+        <tbody id="extrasRows"></tbody>
+      </table>
     </div>
   </div>
 

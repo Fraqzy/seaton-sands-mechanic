@@ -22,17 +22,15 @@ const DEFAULTS = {
   },
 
   cosmetics: {
-    // basisprijs voor elke "sheet" optie die je aanvinkt
+    // basisprijs voor elke "sheet" rij (ongeacht vinkje)
     basePricePerItem: 400,
 
-    // extra "standaard checkmarks" die nooit in sheet staan
-    alwaysOptions: [
+    // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
+    extraOptions: [
       { name: "Fully tune", price: 30000, category: "Performance", enabled: true },
       { name: "Raceharnas", price: 6000, category: "Safety", enabled: true }
     ],
 
-    // mapping van sheet "Onderdeel" naar categorie
-    // (je kan dit uitbreiden in admin)
     categoryMap: {
       "Voorbumpers": "Bumper",
       "Achterbumpers": "Bumper",
@@ -65,7 +63,6 @@ function loadState(){
   if(!raw) return structuredClone(DEFAULTS);
   try{
     const parsed = JSON.parse(raw);
-    // simpele merge: defaults + parsed
     return {
       ...structuredClone(DEFAULTS),
       ...parsed,
@@ -73,7 +70,8 @@ function loadState(){
       cosmetics: {
         ...DEFAULTS.cosmetics,
         ...(parsed.cosmetics||{}),
-        alwaysOptions: parsed?.cosmetics?.alwaysOptions ?? DEFAULTS.cosmetics.alwaysOptions,
+        // migrate old alwaysOptions -> extraOptions if present
+        extraOptions: (parsed?.cosmetics?.extraOptions ?? parsed?.cosmetics?.alwaysOptions ?? DEFAULTS.cosmetics.extraOptions),
         categoryMap: { ...DEFAULTS.cosmetics.categoryMap, ...(parsed?.cosmetics?.categoryMap||{}) }
       }
     };
@@ -116,7 +114,6 @@ function initMaterials(){
   const bulkAmountEl = document.getElementById("bulkAmount");
   const totalQtyEl = document.getElementById("totalQty");
 
-  // default toggle
   bulkToggle.checked = !!state.bulk.enabledDefault;
 
   function render(){
@@ -185,8 +182,6 @@ function initMaterials(){
 
 // ---------- Cosmetics parsing ----------
 function parseSheetText(text){
-  // input voorbeeld: "Voorbumpers - [ 5. Cropped ... ],Motorkappen - [ 5. Vented Hood ], ..."
-  // We splitsen op comma, maar sommige users plaatsen ", " => trim.
   const parts = text
     .split(",")
     .map(s=>s.trim())
@@ -194,8 +189,6 @@ function parseSheetText(text){
 
   const items = [];
   for(const p of parts){
-    // "Key - [ Value ] -"
-    // We pakken alles links van "-" als key, en tussen [ ] als value
     const dashIdx = p.indexOf("-");
     if(dashIdx === -1) continue;
 
@@ -204,9 +197,7 @@ function parseSheetText(text){
     let option = match ? match[1] : "";
     option = option.replace(/\s+/g," ").trim();
 
-    // skip volledig lege keys
     if(!key) continue;
-
     items.push({ part: key, option });
   }
   return items;
@@ -220,49 +211,62 @@ function initCosmetics(){
   const toTableBtn = document.getElementById("toTable");
   const resetBtn = document.getElementById("resetCosmetics");
 
+  // KPIs (sheet)
   const countEl = document.getElementById("countItems");
   const totalEl = document.getElementById("totalPrice");
   const appliedEl = document.getElementById("appliedCount");
   const appliedAmountEl = document.getElementById("appliedAmount");
+
+  // KPIs (extras)
+  const extrasAppliedEl = document.getElementById("extrasApplied");
+  const extrasAmountEl = document.getElementById("extrasAmount");
+
+  // KPI grand total
+  const grandTotalEl = document.getElementById("grandTotal");
+
   const tableBody = document.getElementById("cosmeticsRows");
+  const extrasBody = document.getElementById("extrasRows");
 
-  // rechter lijst "Optie" (zoals screenshot 5)
-  const optionList = document.getElementById("optionList");
+  let sheetRows = [];   // {label, option, category, price, checked}
+  let extraRows = [];   // {name, category, price, checked, enabled}
 
-  let currentRows = []; // {label, option, category, price, checked}
-
-  function rebuild(){
+  function rebuildSheet(){
     tableBody.innerHTML = "";
-    optionList.innerHTML = "";
-
-    currentRows.forEach((r, idx)=>{
+    sheetRows.forEach((r, idx)=>{
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><input type="checkbox" data-idx="${idx}" ${r.checked ? "checked":""}></td>
-        <td><b>${r.label}</b></td>
+        <td><b>${escapeHtml(r.label)}</b></td>
         <td>${escapeHtml(r.option || "")}</td>
         <td>${escapeHtml(r.category || "")}</td>
         <td>${eur(r.price)}</td>
       `;
       tableBody.appendChild(tr);
-
-      const li = document.createElement("div");
-      li.style.padding = "10px";
-      li.style.borderBottom = "1px solid var(--border)";
-      li.textContent = r.option || r.label;
-      optionList.appendChild(li);
     });
+  }
 
-    updateTotals();
+  function rebuildExtras(){
+    extrasBody.innerHTML = "";
+    extraRows.forEach((r, idx)=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="checkbox" data-xidx="${idx}" ${r.checked ? "checked":""}></td>
+        <td><b>${escapeHtml(r.name)}</b></td>
+        <td>${escapeHtml(r.category || "Extra")}</td>
+        <td>${eur(r.price)}</td>
+      `;
+      extrasBody.appendChild(tr);
+    });
   }
 
   function updateTotals(){
-    const count = currentRows.length;
+    // sheet totals
+    const count = sheetRows.length;
     let applied = 0;
     let appliedAmount = 0;
     let total = 0;
 
-    for(const r of currentRows){
+    for(const r of sheetRows){
       total += r.price;
       if(r.checked){
         applied += 1;
@@ -270,49 +274,66 @@ function initCosmetics(){
       }
     }
 
+    // extras totals (ONLY if checked)
+    let extrasApplied = 0;
+    let extrasAmount = 0;
+    for(const r of extraRows){
+      if(r.checked){
+        extrasApplied += 1;
+        extrasAmount += r.price;
+      }
+    }
+
     countEl.textContent = String(count);
     totalEl.textContent = eur(total);
     appliedEl.textContent = `${applied} / ${count}`;
     appliedAmountEl.textContent = eur(appliedAmount);
+
+    extrasAppliedEl.textContent = `${extrasApplied} / ${extraRows.length}`;
+    extrasAmountEl.textContent = eur(extrasAmount);
+
+    grandTotalEl.textContent = eur(total + extrasAmount);
   }
 
   function buildFromText(){
     const parsed = parseSheetText(sheetInput.value || "");
-    const rows = [];
+    sheetRows = parsed.map(it => ({
+      label: it.part,
+      option: it.option,
+      category: state.cosmetics.categoryMap[it.part] || "Onbekend",
+      price: Number(state.cosmetics.basePricePerItem || 0),
+      checked: false
+    }));
 
-    // Sheet items => base price
-    for(const it of parsed){
-      const cat = state.cosmetics.categoryMap[it.part] || "Onbekend";
-      rows.push({
-        label: it.part,
-        option: it.option,
-        category: cat,
-        price: Number(state.cosmetics.basePricePerItem || 0),
+    // extras load (enabled) - NOT counted unless checked
+    extraRows = (state.cosmetics.extraOptions || [])
+      .filter(o => o.enabled)
+      .map(o => ({
+        name: o.name,
+        category: o.category || "Extra",
+        price: Number(o.price || 0),
         checked: false
-      });
-    }
+      }));
 
-    // Always options (extra checkmarks)
-    for(const opt of (state.cosmetics.alwaysOptions || [])){
-      if(!opt.enabled) continue;
-      rows.push({
-        label: opt.name,
-        option: opt.name,
-        category: opt.category || "Extra",
-        price: Number(opt.price || 0),
-        checked: false
-      });
-    }
-
-    currentRows = rows;
-    rebuild();
+    rebuildSheet();
+    rebuildExtras();
+    updateTotals();
   }
 
   tableBody.addEventListener("change", (e)=>{
     const cb = e.target;
-    if(cb && cb.matches("input[type=checkbox]")){
+    if(cb && cb.matches('input[type="checkbox"][data-idx]')){
       const idx = Number(cb.dataset.idx);
-      currentRows[idx].checked = cb.checked;
+      sheetRows[idx].checked = cb.checked;
+      updateTotals();
+    }
+  });
+
+  extrasBody.addEventListener("change", (e)=>{
+    const cb = e.target;
+    if(cb && cb.matches('input[type="checkbox"][data-xidx]')){
+      const idx = Number(cb.dataset.xidx);
+      extraRows[idx].checked = cb.checked;
       updateTotals();
     }
   });
@@ -320,12 +341,17 @@ function initCosmetics(){
   toTableBtn.addEventListener("click", buildFromText);
   resetBtn.addEventListener("click", ()=>{
     sheetInput.value = "";
-    currentRows = [];
-    rebuild();
+    sheetRows = [];
+    extraRows = [];
+    rebuildSheet();
+    rebuildExtras();
+    updateTotals();
   });
 
   // start leeg
-  rebuild();
+  rebuildSheet();
+  rebuildExtras();
+  updateTotals();
 }
 
 function escapeHtml(str){
@@ -350,9 +376,8 @@ function initAdmin(){
 
   const matJson = document.getElementById("matJson");
   const mapJson = document.getElementById("mapJson");
-  const alwaysJson = document.getElementById("alwaysJson");
+  const extraJson = document.getElementById("extraJson");
 
-  // fill
   adminCode.value = state.adminCode;
   bulkThreshold.value = state.bulk.threshold;
   bulkAdd.value = state.bulk.addPerPiece;
@@ -362,7 +387,7 @@ function initAdmin(){
 
   matJson.value = JSON.stringify(state.materials, null, 2);
   mapJson.value = JSON.stringify(state.cosmetics.categoryMap, null, 2);
-  alwaysJson.value = JSON.stringify(state.cosmetics.alwaysOptions, null, 2);
+  extraJson.value = JSON.stringify(state.cosmetics.extraOptions, null, 2);
 
   document.getElementById("saveAdmin").addEventListener("click", ()=>{
     try{
@@ -386,9 +411,9 @@ function initAdmin(){
       if(typeof cmap !== "object" || Array.isArray(cmap) || !cmap) throw new Error("CategoryMap JSON moet een object zijn.");
       newState.cosmetics.categoryMap = cmap;
 
-      const aopts = JSON.parse(alwaysJson.value);
-      if(!Array.isArray(aopts)) throw new Error("AlwaysOptions JSON moet een array zijn.");
-      newState.cosmetics.alwaysOptions = aopts;
+      const ex = JSON.parse(extraJson.value);
+      if(!Array.isArray(ex)) throw new Error("Extra options JSON moet een array zijn.");
+      newState.cosmetics.extraOptions = ex;
 
       saveState(newState);
       alert("Opgeslagen! Refresh je pagina’s.");
@@ -410,6 +435,5 @@ document.addEventListener("DOMContentLoaded", ()=>{
   if(page === "materials") initMaterials();
   if(page === "cosmetics") initCosmetics();
   if(page === "admin") initAdmin();
-  // home ook hidden admin
   setupHiddenAdmin();
 });
