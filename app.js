@@ -254,7 +254,6 @@ function initCosmetics(){
         <td><b>${escapeHtml(r.label)}</b></td>
         <td>${escapeHtml(r.option || "")}</td>
         <td>${escapeHtml(r.category || "")}</td>
-        <td>${eur(r.price)}</td>
       `;
       tableBody.appendChild(tr);
     });
@@ -319,6 +318,26 @@ function initCosmetics(){
       price: Number(state.cosmetics.basePricePerItem || 0),
       checked: false
     }));
+
+    // Sorteren op categorie → onderdeel → optie
+    sheetRows.sort((a,b)=>{
+      const ca = (a.category || "").toLowerCase();
+      const cb = (b.category || "").toLowerCase();
+      if(ca < cb) return -1;
+      if(ca > cb) return 1;
+
+      const la = (a.label || "").toLowerCase();
+      const lb = (b.label || "").toLowerCase();
+      if(la < lb) return -1;
+      if(la > lb) return 1;
+
+      const oa = (a.option || "").toLowerCase();
+      const ob = (b.option || "").toLowerCase();
+      if(oa < ob) return -1;
+      if(oa > ob) return 1;
+      return 0;
+    });
+
     rebuildSheet();
     updateTotals();
   }
@@ -355,6 +374,20 @@ function initCosmetics(){
 
   // Init: extras altijd tonen, ook zonder sheet
   loadExtras(false);
+
+  // Extra opties sorteren op categorie → naam
+  extraRows.sort((a,b)=>{
+    const ca = (a.category || "").toLowerCase();
+    const cb = (b.category || "").toLowerCase();
+    if(ca < cb) return -1;
+    if(ca > cb) return 1;
+    const na = (a.name || "").toLowerCase();
+    const nb = (b.name || "").toLowerCase();
+    if(na < nb) return -1;
+    if(na > nb) return 1;
+    return 0;
+  });
+
   rebuildExtras();
   rebuildSheet();
   updateTotals();

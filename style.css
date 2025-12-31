@@ -146,3 +146,8 @@ hr{border:none;border-top:1px solid var(--border);margin:18px 0}
 @media (max-width:900px){ .grid2{grid-template-columns:1fr} .kpis{grid-template-columns:1fr} .row{grid-template-columns:1fr} }
 
 .sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px 0}
+
+
+/* Scroll area for long tables (e.g., Extra opties) */
+.scrollbox{max-height:320px;overflow:auto;border:1px solid var(--border);border-radius:12px}
+.scrollbox .table{border-radius:0}
