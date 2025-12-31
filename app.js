@@ -2,7 +2,7 @@
 const STORAGE_KEY = "seaton_tools_v1";
 
 const DEFAULTS = {
-  adminCode: "123", // verander via admin panel
+  adminCode: "284", // verander via admin panel
   materials: [
     { key: "Aluminium", price: 25 },
     { key: "Car parts", price: 25 },
