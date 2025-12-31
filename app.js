@@ -228,7 +228,22 @@ function initCosmetics(){
   const extrasBody = document.getElementById("extrasRows");
 
   let sheetRows = [];   // {label, option, category, price, checked}
-  let extraRows = [];   // {name, category, price, checked, enabled}
+  let extraRows = [];   // {name, category, price, checked}
+
+  function loadExtras(keepChecks = true){
+    const prev = new Map();
+    if(keepChecks){
+      for(const r of extraRows) prev.set(r.name, !!r.checked);
+    }
+    extraRows = (state.cosmetics.extraOptions || [])
+      .filter(o => o.enabled)
+      .map(o => ({
+        name: o.name,
+        category: o.category || "Extra",
+        price: Number(o.price || 0),
+        checked: prev.get(o.name) ?? false
+      }));
+  }
 
   function rebuildSheet(){
     tableBody.innerHTML = "";
@@ -304,19 +319,7 @@ function initCosmetics(){
       price: Number(state.cosmetics.basePricePerItem || 0),
       checked: false
     }));
-
-    // extras load (enabled) - NOT counted unless checked
-    extraRows = (state.cosmetics.extraOptions || [])
-      .filter(o => o.enabled)
-      .map(o => ({
-        name: o.name,
-        category: o.category || "Extra",
-        price: Number(o.price || 0),
-        checked: false
-      }));
-
     rebuildSheet();
-    rebuildExtras();
     updateTotals();
   }
 
@@ -339,18 +342,21 @@ function initCosmetics(){
   });
 
   toTableBtn.addEventListener("click", buildFromText);
+
   resetBtn.addEventListener("click", ()=>{
     sheetInput.value = "";
     sheetRows = [];
-    extraRows = [];
+    // extras blijven zichtbaar, maar reset checkboxes
+    for(const r of extraRows) r.checked = false;
     rebuildSheet();
     rebuildExtras();
     updateTotals();
   });
 
-  // start leeg
-  rebuildSheet();
+  // Init: extras altijd tonen, ook zonder sheet
+  loadExtras(false);
   rebuildExtras();
+  rebuildSheet();
   updateTotals();
 }
 

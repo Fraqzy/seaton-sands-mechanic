@@ -19,6 +19,24 @@
     </div>
 
     <div class="panel">
+      <h2>Extra opties</h2>
+      <p class="note" style="margin-top:-6px">
+        Deze staan <b>altijd</b> klaar zodat je ook zonder sheet snel kan rekenen. Ze tellen <b>alleen</b> mee als je ze aanvinkt.
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:60px">✓</th>
+            <th>Optie</th>
+            <th>Categorie</th>
+            <th style="width:130px">Prijs</th>
+          </tr>
+        </thead>
+        <tbody id="extrasRows"></tbody>
+      </table>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
       <h2>Input</h2>
       <textarea id="sheetInput" placeholder="Plak hier je sheet..."></textarea>
       <div class="btns">
@@ -59,10 +77,6 @@
           <div class="value" id="grandTotal">€ 0</div>
         </div>
       </div>
-
-      <p class="note" style="margin-top:10px">
-        Fully tune / Raceharnas tellen <b>alleen mee als je ze aanvinkt</b> in de extra tabel.
-      </p>
     </div>
 
     <div class="panel" style="margin-top:16px">
@@ -78,21 +92,6 @@
           </tr>
         </thead>
         <tbody id="cosmeticsRows"></tbody>
-      </table>
-    </div>
-
-    <div class="panel" style="margin-top:16px">
-      <h2>Extra opties</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th style="width:60px">✓</th>
-            <th>Optie</th>
-            <th>Categorie</th>
-            <th style="width:130px">Prijs</th>
-          </tr>
-        </thead>
-        <tbody id="extrasRows"></tbody>
       </table>
     </div>
   </div>
