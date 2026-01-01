@@ -40,7 +40,7 @@ const DEFAULTS = {
         { name: "Bijvullen NOS", price: 2500, category: "NOS items", enabled: true },
         { name: "NOS kleurinjector", price: 1000, category: "NOS items", enabled: true },
         { name: "NEON lichten", price: 1500, category: "Werktuigkundige gereedschap", enabled: true },
-        { name: "Xenon lichten", price: 1500, category: "Werktuigkundige gereedschap", enabled: true }
+        { name: "Xenon lichten", price: 1500, category: "Werktuigkundige gereedschap", enabled: true },
         { name: "Ophanging Tier 1", price: 2500, category: "performance", enabled: true },
         { name: "Ophanging Tier 2", price: 5000, category: "performance", enabled: true },
         { name: "Ophanging Tier 3", price: 7500, category: "performance", enabled: true },
@@ -48,7 +48,7 @@ const DEFAULTS = {
         { name: "Ophanging Tier 5", price: 12500, category: "performance", enabled: true },
         { name: "1 band", price: 400, category: "repair items", enabled: true },
         { name: "2 banden", price: 800, category: "repair items", enabled: true },
-        { name: "Set banden", price: 1000, category: "repair items", enabled: true },
+        { name: "Set banden", price: 1000, category: "repair items", enabled: true }
 ],
 
     categoryMap: {
