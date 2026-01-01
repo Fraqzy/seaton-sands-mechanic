@@ -26,7 +26,7 @@ const DEFAULTS = {
     basePricePerItem: 400,
 
     // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
-    favoriteExtras: [],
+    favoriteExtras: [0, 1],
 
     // 10% korting op grand total (sheet + extras)
     discount10: false,
