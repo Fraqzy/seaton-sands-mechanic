@@ -315,7 +315,6 @@ function loadExtras(keepChecks = true){
         <td><input type="checkbox" data-idx="${idx}" ${r.checked ? "checked":""}></td>
         <td><b>${escapeHtml(r.label)}</b></td>
         <td>${escapeHtml(r.option || "")}</td>
-        <td>${escapeHtml(r.category || "")}</td>
       `;
       tableBody.appendChild(tr);
     });
@@ -330,7 +329,6 @@ function loadExtras(keepChecks = true){
         <td><input type="checkbox" data-xidx="${idx}" ${r.checked ? "checked":""}></td>
         <td><button class="favBtn ${favOn ? "on":""}" data-fav="${idx}" title="Favoriet">${favOn ? "★":"☆"}</button></td>
         <td><b>${escapeHtml(r.name)}</b></td>
-        <td>${escapeHtml(r.category || "Extra")}</td>
         <td>${eur(r.price)}</td>
       `;
       extrasBody.appendChild(tr);
