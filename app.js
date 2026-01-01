@@ -485,19 +485,6 @@ function loadExtras(keepChecks = true){
     });
   }
 
-  // Extra opties sorteren op categorie → naam
-  extraRows.sort((a,b)=>{
-    const ca = (a.category || "").toLowerCase();
-    const cb = (b.category || "").toLowerCase();
-    if(ca < cb) return -1;
-    if(ca > cb) return 1;
-    const na = (a.name || "").toLowerCase();
-    const nb = (b.name || "").toLowerCase();
-    if(na < nb) return -1;
-    if(na > nb) return 1;
-    return 0;
-  });
-
   rebuildExtras();
   rebuildSheet();
   updateTotals();
