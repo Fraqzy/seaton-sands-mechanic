@@ -61,13 +61,13 @@ const DEFAULTS = {
       "Uitlaten": "Uitlaat",
       "Spoilers": "Spoiler",
       "Wheels": "Custom Velgen",
-      "Velg": "Kleuren",
+      "Velg": "Spuitbus",
       "Raam Tints": "Ramentinten",
-      "Primair": "Kleuren",
-      "Secundair": "Kleuren",
-      "Parelmoer": "Kleuren",
-      "Dashboard": "Kleuren",
-      "Interieur": "Kleuren"
+      "Primair": "Spuitbus",
+      "Secundair": "Spuitbus",
+      "Parelmoer": "Spuitbus",
+      "Dashboard": "Spuitbus",
+      "Interieur": "Spuitbus"
     }
   }
 };
