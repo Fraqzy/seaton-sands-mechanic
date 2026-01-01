@@ -72,6 +72,8 @@ const DEFAULTS = {
       "Ornamenten": "Binnenkant Cosmetica",
       "Luidsprekers": "Binnenkant Cosmetica",
       "Deurluidsprekers": "Binnenkant Cosmetica",
+      "Wijzerplaten": "Binnenkant Cosmetica",
+      "Koffers": "Buitenkant Cosmetica",
       "Stoelen": "Stoel cosmetics",
       "Extras": "Buitenkant Cosmetica",
       "Dak": "Voertuig Dak",
