@@ -26,7 +26,7 @@ const DEFAULTS = {
     basePricePerItem: 400,
 
     // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
-    favoriteExtras: ["Fully tune", "Raceharnas"],
+    favoriteExtras: ["Fully tune", "Raceharnas", "Kleine reparatie", "Grote reparatie", "Set banden"],
 
     // 10% korting op grand total (sheet + extras)
     discount10: false,
@@ -48,7 +48,9 @@ const DEFAULTS = {
         { name: "Ophanging Tier 5", price: 12500, category: "performance", enabled: true },
         { name: "1 band", price: 400, category: "repair items", enabled: true },
         { name: "2 banden", price: 800, category: "repair items", enabled: true },
-        { name: "Set banden", price: 1000, category: "repair items", enabled: true }
+        { name: "Set banden", price: 1000, category: "repair items", enabled: true },
+        { name: "Kleine reparatie", price: 300, category: "repair items", enabled: true },
+        { name: "Grote reparatie", price: 600, category: "repair items", enabled: true }
 ],
 
     categoryMap: {
