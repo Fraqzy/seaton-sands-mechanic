@@ -311,11 +311,10 @@ function loadExtras(keepChecks = true){
     sheetRows.forEach((r, idx)=>{
       const tr = document.createElement("tr");
       if(r.checked) tr.classList.add("done");
-      tr.innerHTML = `
-        <td><input type="checkbox" data-idx="${idx}" ${r.checked ? "checked":""}></td>
+      tr.innerHTML = `        <td><input type="checkbox" data-idx="${idx}" ${r.checked ? "checked":""}></td>
         <td><b>${escapeHtml(r.label)}</b></td>
         <td>${escapeHtml(r.option || "")}</td>
-      `;
+        <td>${escapeHtml(r.category || "")}</td>`;
       tableBody.appendChild(tr);
     });
   }
