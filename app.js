@@ -27,14 +27,7 @@ const DEFAULTS = {
 
     // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
     favoriteExtras: [],
-// --- force default favorite extras from data ---
-extraOptions.forEach((opt, idx) => {
-  if (opt.favorite === true) {
-    if (!state.favoriteExtras.includes(idx)) {
-      state.favoriteExtras.push(idx);
-    }
-  }
-});
+
     // 10% korting op grand total (sheet + extras)
     discount10: false,
 
