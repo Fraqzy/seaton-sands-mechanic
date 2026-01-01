@@ -42,7 +42,14 @@ const DEFAULTS = {
         { name: "NEON lichten", price: 1500, category: "Werktuigkundige gereedschap", enabled: true },
         { name: "Xenon lichten", price: 1500, category: "Werktuigkundige gereedschap", enabled: true }
 ],
-
+// --- force default favorite extras from data ---
+extraOptions.forEach((opt, idx) => {
+  if (opt.favorite === true) {
+    if (!state.favoriteExtras.includes(idx)) {
+      state.favoriteExtras.push(idx);
+    }
+  }
+});
     categoryMap: {
       "Voorbumpers": "Bumper",
       "Achterbumpers": "Bumper",
