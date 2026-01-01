@@ -28,6 +28,9 @@ const DEFAULTS = {
     // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
     favoriteExtras: [],
 
+    // 10% korting op het grand total (toggle in cosmetics)
+    discount10Default: false,
+
     extraOptions: [
         { name: "Fully tune", price: 30000, category: "Performance", enabled: true },
         { name: "Raceharnas", price: 6000, category: "NOS items", enabled: true },
@@ -255,8 +258,22 @@ function initCosmetics(){
   const tableBody = document.getElementById("cosmeticsRows");
   const extrasBody = document.getElementById("extrasRows");
 
+  // 10% korting toggle (optioneel)
+  const discountToggle = document.getElementById("discount10");
+  const discountAmountEl = document.getElementById("discountAmount");
+
+
   let sheetRows = [];   // {label, option, category, price, checked}
   let extraRows = [];   // {name, category, price, checked}
+
+  if(discountToggle){
+    discountToggle.checked = !!state.cosmetics.discount10Default;
+    discountToggle.addEventListener('change', ()=>{
+      state.cosmetics.discount10Default = !!discountToggle.checked;
+      saveState(state);
+      updateTotals();
+    });
+  }
 
   
 
@@ -325,8 +342,7 @@ function loadExtras(keepChecks = true){
         <td><input type="checkbox" data-xidx="${idx}" ${r.checked ? "checked":""}></td>
         <td><button class="favBtn ${favOn ? "on":""}" data-fav="${idx}" title="Favoriet">${favOn ? "★":"☆"}</button></td>
         <td><b>${escapeHtml(r.name)}</b></td>
-        <td>${escapeHtml(r.category || "Extra")}</td>
-        <td>${eur(r.price)}</td>
+        <td style="text-align:right">${eur(r.price)}</td>
       `;
       extrasBody.appendChild(tr);
     });
@@ -384,7 +400,11 @@ function loadExtras(keepChecks = true){
         : '<span class="small">Nog geen sheet omgezet.</span>';
     }
 
-    grandTotalEl.textContent = eur(total + extrasAmount);
+    const subtotal = total + extrasAmount;
+    const discountOn = !!(discountToggle && discountToggle.checked);
+    const discount = discountOn ? subtotal * 0.10 : 0;
+    if(discountAmountEl) discountAmountEl.textContent = eur(discount);
+    grandTotalEl.textContent = eur(subtotal - discount);
   }
 
   function buildFromText(){

@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Cosmetics - Seaton Sands Tools</title>
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* Cosmetics layout: main + sidebar (desktop), stacked (mobile) */
+    .cos-layout{ display:grid; grid-template-columns: 1fr 420px; gap:16px; align-items:start; }
+    .cos-main{ min-width:0; }
+    .cos-side{ min-width:0; }
+    .cos-side .panel{ position:sticky; top:16px; }
+    @media (max-width: 1100px){
+      .cos-layout{ grid-template-columns: 1fr; }
+      .cos-side .panel{ position:static; }
+    }
+    /* Make extra options table a bit tighter */
+    .cos-side .table th, .cos-side .table td{ padding:10px 12px; }
+    .discount-row{ display:flex; align-items:center; gap:10px; margin:10px 0 8px; }
+    .discount-row input{ transform: scale(1.15); }
+  </style>
 </head>
 <body data-page="cosmetics">
   <div class="container">
@@ -19,68 +34,53 @@
       </div>
     </div>
 
-    <div class="panel">
-      <h2>Extra opties</h2>
-      <p class="note" style="margin-top:-6px">
-        Deze staan <b>altijd</b> klaar zodat je ook zonder sheet snel kan rekenen. Ze tellen <b>alleen</b> mee als je ze aanvinkt.
-      </p>
-      <div class="scrollbox"><table class="table">
-        <thead>
-          <tr>
-            <th style="width:60px">✓</th>
-            <th style="width:60px">★</th>
-            <th>Optie</th>
-            <th>Categorie</th>
-</tr>
-        </thead>
-        <tbody id="extrasRows"></tbody>
-      </table></div>
-    </div>
-
-    <div class="panel" style="margin-top:16px">
+    
+    <div class="cos-layout">
+      <div class="cos-main">
+<div class="panel" style="margin-top:16px">
       <h2>Input</h2>
       <textarea id="sheetInput" placeholder="Plak hier je sheet..."></textarea>
       <div class="btns">
         <button class="primary" id="toTable">Zet om naar tabel</button>
         <button class="danger" id="resetCosmetics">Reset</button>
       </div>
-      <p class="note">
-        Druk op "zet om naar tabel" om je lijst te maken, de reset knop maakt dit weer leeg.
-      </p>
-    </div>
 
-    <div class="panel" style="margin-top:16px">
+<div class="panel" style="margin-top:16px">
       <h2>Totaal</h2>
       <div class="kpis">
         <div class="kpi">
           <div class="label">Aantal items (sheet)</div>
-          <div class="value" id="countItems">0</div>
-        </div>
-        <div class="kpi">
-          <div class="label">Totaal (sheet)</div>
-          <div class="value" id="totalPrice">€ 0</div>
-        </div>
-        
-      </div>
 
-      <div class="kpis" style="margin-top:12px">
-        <div class="kpi">
-          <div class="label">Extra opties</div>
-          <div class="value" id="extrasApplied">0 / 0</div>
-          <div class="small">Bedrag extra: <span id="extrasAmount">€ 0</span></div>
-        </div>
-        <div class="kpi">
-          <div class="label">Grand total (sheet + extra)</div>
-          <div class="value" id="grandTotal">€ 0</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-top:16px">
+<div class="panel" style="margin-top:16px">
       <div class="flex" style="justify-content:space-between;align-items:flex-end">
         <h2 style="margin:0">Tabel</h2>
         <span class="small">Vink af wat klaar is</span>
       </div>
+      </div>
+      <div class="cos-side">
+<div class="panel">
+      <h2>Extra opties</h2>
+      <p class="note" style="margin-top:-6px">
+        Deze staan <b>altijd</b> klaar zodat je ook zonder sheet snel kan rekenen. Ze tellen <b>alleen</b> mee als je ze aanvinkt.
+      </p>
+      <div class="discount-row">
+        <input type="checkbox" id="discount10" />
+        <label for="discount10"><b>10% korting</b> toepassen op het totaal</label>
+      </div>
+      <div class="scrollbox"><table class="table">
+        <thead>
+          <tr>
+            <th style="width:60px">✓</th>
+            <th style="width:60px">★</th>
+            <th>Optie</th>
+            <th style="text-align:right">Prijs</th>
+          </tr>
+        </thead>
+        <tbody id="extrasRows"></tbody>
+      </table></div>
+      </div>
+    </div>
+
       <div class="chips" id="categorySummary"></div>
       <table class="table">
         <thead>
