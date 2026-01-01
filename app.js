@@ -1,5 +1,5 @@
 // ---------- Storage + defaults ----------
-const STORAGE_KEY = "seaton_tools_v1";
+const STORAGE_KEY = "seaton_tools_v2";
 
 const DEFAULTS = {
   adminCode: "284", // verander via admin panel
@@ -26,7 +26,7 @@ const DEFAULTS = {
     basePricePerItem: 400,
 
     // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
-    favoriteExtras: [0, 1],
+    favoriteExtras: ["Fully tune", "Raceharnas"],
 
     // 10% korting op grand total (sheet + extras)
     discount10: false,
