@@ -52,16 +52,18 @@ const DEFAULTS = {
       "Borden": "Aangepast kentekenplaat",
       "Livery": "Bestickering",
       "Afwerking B": "Buitenkant cosmetica",
+      "Afwerking A": "Buitenkant cosmetica",
       "Extras": "Buitenkant cosmetica",
       "Dak": "Buitenkant cosmetica",
       "Uitlaten": "Buitenkant cosmetica",
       "Spoilers": "Buitenkant cosmetica",
       "Wheels": "Custom Velgen",
-      "Velg": "Custom Velgen",
+      "Velg": "Kleuren",
       "Raam Tints": "Ramentinten",
       "Primair": "Kleuren",
       "Secundair": "Kleuren",
       "Parelmoer": "Kleuren",
+      "Dashboard": "Kleuren",
       "Interieur": "Kleuren"
     }
   }
