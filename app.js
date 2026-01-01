@@ -66,7 +66,7 @@ const DEFAULTS = {
       "Livery": "Bestickering",
       "Afwerking B": "Buitenkant Cosmetica",
       "Afwerking A": "Buitenkant Cosmetica",
-      "Extras": "Buitenkant cosmetica",
+      "Extras": "Buitenkant Cosmetica",
       "Dak": "Voertuig Dak",
       "Uitlaten": "Uitlaat",
       "Spoilers": "Spoiler",
