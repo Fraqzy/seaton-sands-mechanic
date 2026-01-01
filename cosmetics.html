@@ -5,20 +5,24 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Cosmetics - Seaton Sands Tools</title>
   <link rel="stylesheet" href="style.css"/>
+
+  <!-- Alleen voor layout van sidebar (zonder style.css aan te passen) -->
   <style>
-    /* Cosmetics layout: main + sidebar (desktop), stacked (mobile) */
-    .cos-layout{ display:grid; grid-template-columns: 1fr 420px; gap:16px; align-items:start; }
-    .cos-main{ min-width:0; }
-    .cos-side{ min-width:0; }
-    .cos-side .panel{ position:sticky; top:16px; }
+    .cos-layout{ display:grid; grid-template-columns: 1fr 420px; gap: 18px; align-items:start; }
+    .cos-side .panel{ position: sticky; top: 16px; }
     @media (max-width: 1100px){
       .cos-layout{ grid-template-columns: 1fr; }
-      .cos-side .panel{ position:static; }
+      .cos-side .panel{ position: static; }
     }
-    /* Make extra options table a bit tighter */
-    .cos-side .table th, .cos-side .table td{ padding:10px 12px; }
-    .discount-row{ display:flex; align-items:center; gap:10px; margin:10px 0 8px; }
-    .discount-row input{ transform: scale(1.15); }
+    .kpis{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    @media (max-width: 900px){ .kpis{ grid-template-columns: 1fr; } }
+    .kpi.hidden{ display:none; }
+    .kpi{ background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 12px; }
+    .kpi .label{ opacity: 0.75; font-size: 12px; }
+    .kpi .value{ font-weight: 800; font-size: 22px; margin-top: 4px; }
+    .inline-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top: 10px; }
+    .discountRow{ display:flex; gap: 10px; align-items:center; margin: 10px 0 8px; }
+    .discountRow input{ transform: scale(1.1); }
   </style>
 </head>
 <body data-page="cosmetics">
@@ -29,71 +33,104 @@
         <h1>Cosmetics — Sheet naar tabel</h1>
         <p>Plak de mechanic sheet tekst, klik “Zet om naar tabel”.</p>
         <div class="flex">
-          <a class="badge" href="index.html">← Home</a>
+          <a class="btn" href="index.html">← Home</a>
         </div>
       </div>
     </div>
 
-    
     <div class="cos-layout">
+      <!-- MAIN -->
       <div class="cos-main">
-<div class="panel" style="margin-top:16px">
-      <h2>Input</h2>
-      <textarea id="sheetInput" placeholder="Plak hier je sheet..."></textarea>
-      <div class="btns">
-        <button class="primary" id="toTable">Zet om naar tabel</button>
-        <button class="danger" id="resetCosmetics">Reset</button>
+        <div class="panel">
+          <h2>Input</h2>
+          <textarea id="sheetInput" placeholder="Plak hier je sheet..."></textarea>
+          <div class="actions">
+            <button class="primary" id="toTable">Zet om naar tabel</button>
+            <button class="danger" id="resetCosmetics">Reset</button>
+          </div>
+          <p class="note">Druk op “Zet om naar tabel” om je lijst te maken, de reset knop maakt dit weer leeg.</p>
+        </div>
+
+        <div class="panel">
+          <h2>Totaal</h2>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Aantal items (sheet)</div>
+              <div class="value" id="countItems">0</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Totaal (sheet)</div>
+              <div class="value" id="totalPrice">€ 0,00</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Extra opties</div>
+              <div class="value" id="extrasApplied">0 / 0</div>
+              <div class="small">Bedrag extra: <span id="extrasAmount">€ 0,00</span></div>
+            </div>
+
+            <!-- Korting (verschijnt als je de checkbox aanzet) -->
+            <div class="kpi hidden">
+              <div class="label">Korting (10%)</div>
+              <div class="value" id="discountAmount">€ 0,00</div>
+            </div>
+
+            <div class="kpi">
+              <div class="label">Grand total (sheet + extra)</div>
+              <div class="value" id="grandTotal">€ 0,00</div>
+            </div>
+          </div>
+
+          <div class="inline-row" id="categorySummary"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Tabel</h2>
+          <p class="small">Vink af wat klaar is</p>
+          <div class="tableWrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:60px">✓</th>
+                  <th>Onderdeel</th>
+                  <th>Optie</th>
+                  <th>Categorie</th>
+                </tr>
+              </thead>
+              <tbody id="cosmeticsRows"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
-<div class="panel" style="margin-top:16px">
-      <h2>Totaal</h2>
-      <div class="kpis">
-        <div class="kpi">
-          <div class="label">Aantal items (sheet)</div>
-
-<div class="panel" style="margin-top:16px">
-      <div class="flex" style="justify-content:space-between;align-items:flex-end">
-        <h2 style="margin:0">Tabel</h2>
-        <span class="small">Vink af wat klaar is</span>
-      </div>
-      </div>
+      <!-- SIDE -->
       <div class="cos-side">
-<div class="panel">
-      <h2>Extra opties</h2>
-      <p class="note" style="margin-top:-6px">
-        Deze staan <b>altijd</b> klaar zodat je ook zonder sheet snel kan rekenen. Ze tellen <b>alleen</b> mee als je ze aanvinkt.
-      </p>
-      <div class="discount-row">
-        <input type="checkbox" id="discount10" />
-        <label for="discount10"><b>10% korting</b> toepassen op het totaal</label>
-      </div>
-      <div class="scrollbox"><table class="table">
-        <thead>
-          <tr>
-            <th style="width:60px">✓</th>
-            <th style="width:60px">★</th>
-            <th>Optie</th>
-            <th style="text-align:right">Prijs</th>
-          </tr>
-        </thead>
-        <tbody id="extrasRows"></tbody>
-      </table></div>
+        <div class="panel">
+          <h2>Extra opties</h2>
+          <p class="note" style="margin-top:6px">Deze staan altijd klaar zodat je ook zonder sheet snel kan rekenen. Ze tellen alleen mee als je ze aanvinkt.</p>
+
+          <div class="discountRow">
+            <input type="checkbox" id="discount10" />
+            <label for="discount10"><b>10% korting</b> toepassen op het totaal</label>
+          </div>
+
+          <div class="scrollbox">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:60px">✓</th>
+                  <th style="width:60px">★</th>
+                  <th>Optie</th>
+                  <th>Categorie</th>
+                  <th style="text-align:right">Prijs</th>
+                </tr>
+              </thead>
+              <tbody id="extrasRows"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
 
-      <div class="chips" id="categorySummary"></div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th style="width:60px">✓</th>
-            <th>Onderdeel</th>
-            <th>Optie</th>
-            <th>Categorie</th>
-</tr>
-        </thead>
-        <tbody id="cosmeticsRows"></tbody>
-      </table>
-    </div>
   </div>
 
   <div class="hidden-admin" title="admin"></div>

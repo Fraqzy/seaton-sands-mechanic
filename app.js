@@ -28,8 +28,8 @@ const DEFAULTS = {
     // extra opties (NIET standaard meetellen: enkel als checkbox aan staat)
     favoriteExtras: [],
 
-    // 10% korting op het grand total (toggle in cosmetics)
-    discount10Default: false,
+    // 10% korting op grand total (sheet + extras)
+    discount10: false,
 
     extraOptions: [
         { name: "Fully tune", price: 30000, category: "Performance", enabled: true },
@@ -254,26 +254,14 @@ function initCosmetics(){
 
   // KPI grand total
   const grandTotalEl = document.getElementById("grandTotal");
+  const discountToggle = document.getElementById("discount10");
+  const discountAmountEl = document.getElementById("discountAmount");
 
   const tableBody = document.getElementById("cosmeticsRows");
   const extrasBody = document.getElementById("extrasRows");
 
-  // 10% korting toggle (optioneel)
-  const discountToggle = document.getElementById("discount10");
-  const discountAmountEl = document.getElementById("discountAmount");
-
-
   let sheetRows = [];   // {label, option, category, price, checked}
   let extraRows = [];   // {name, category, price, checked}
-
-  if(discountToggle){
-    discountToggle.checked = !!state.cosmetics.discount10Default;
-    discountToggle.addEventListener('change', ()=>{
-      state.cosmetics.discount10Default = !!discountToggle.checked;
-      saveState(state);
-      updateTotals();
-    });
-  }
 
   
 
@@ -342,7 +330,8 @@ function loadExtras(keepChecks = true){
         <td><input type="checkbox" data-xidx="${idx}" ${r.checked ? "checked":""}></td>
         <td><button class="favBtn ${favOn ? "on":""}" data-fav="${idx}" title="Favoriet">${favOn ? "★":"☆"}</button></td>
         <td><b>${escapeHtml(r.name)}</b></td>
-        <td style="text-align:right">${eur(r.price)}</td>
+        <td>${escapeHtml(r.category || "Extra")}</td>
+        <td>${eur(r.price)}</td>
       `;
       extrasBody.appendChild(tr);
     });
@@ -400,11 +389,14 @@ function loadExtras(keepChecks = true){
         : '<span class="small">Nog geen sheet omgezet.</span>';
     }
 
-    const subtotal = total + extrasAmount;
-    const discountOn = !!(discountToggle && discountToggle.checked);
-    const discount = discountOn ? subtotal * 0.10 : 0;
-    if(discountAmountEl) discountAmountEl.textContent = eur(discount);
-    grandTotalEl.textContent = eur(subtotal - discount);
+        const grand = total + extrasAmount;
+    const discountOn = (discountToggle ? !!discountToggle.checked : !!state.cosmetics.discount10);
+    const discount = discountOn ? (grand * 0.10) : 0;
+    if(discountAmountEl){
+      discountAmountEl.textContent = eur(discount);
+      discountAmountEl.closest?.('.kpi')?.classList.toggle('hidden', discount <= 0);
+    }
+    grandTotalEl.textContent = eur(grand - discount);
   }
 
   function buildFromText(){
@@ -485,6 +477,16 @@ function loadExtras(keepChecks = true){
 
   // Init: extras altijd tonen, ook zonder sheet
   loadExtras(false);
+
+  // 10% korting toggle
+  if(discountToggle){
+    discountToggle.checked = !!state.cosmetics.discount10;
+    discountToggle.addEventListener("change", ()=>{
+      state.cosmetics.discount10 = !!discountToggle.checked;
+      saveState(state);
+      updateTotals();
+    });
+  }
 
   // Extra opties sorteren op categorie → naam
   extraRows.sort((a,b)=>{
