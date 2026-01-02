@@ -63,7 +63,7 @@ const DEFAULTS = {
       "Rechter spatbord": "Skirts",
       "Rolkooien": "Rollcage",
       "Kenteken": "Aangepast Kenteken",
-      "Platenhouders": "Aangepast Kenteken",
+      "Kentekenplaathouders": "Aangepast Kenteken",
       "Wrap": "Bestickering",
       "Afwerking B": "Buitenkant Cosmetica",
       "Afwerking A": "Buitenkant Cosmetica",
