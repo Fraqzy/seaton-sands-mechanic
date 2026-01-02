@@ -82,7 +82,7 @@ const DEFAULTS = {
       "Spoilers": "Spoiler",
       "Wheels": "Custom Velgen",
       "Velg": "Spuitbus",
-      "Raamfolie": "Ramentinten",
+      "Raamfolie": "Ramen tint kit",
       "Primair": "Spuitbus",
       "Secundair": "Spuitbus",
       "Parelmoer": "Spuitbus",
