@@ -71,7 +71,7 @@ const DEFAULTS = {
       "Hydraulica": "Buitenkant Cosmetica",
       "Ornamenten": "Binnenkant Cosmetica",
       "Speakers": "Binnenkant Cosmetica",
-      "Deurluidsprekers": "Binnenkant Cosmetica",
+      "Deurspeakers": "Binnenkant Cosmetica",
       "Wijzerplaten": "Binnenkant Cosmetica",
       "Wielkastafdekkingen": "Buitenkant Cosmetica",
       "Koffers": "Buitenkant Cosmetica",
