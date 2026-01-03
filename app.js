@@ -73,6 +73,7 @@ const DEFAULTS = {
       "Luchtfilters": "Buitenkant Cosmetica",
       "Antennes": "Buitenkant Cosmetica",
       "Hydraulica": "Buitenkant Cosmetica",
+      "Motorstang": "Buitenkant Cosmetica",
       "Ornamenten": "Binnenkant Cosmetica",
       "Sturen": "Binnenkant Cosmetica",
       "Schakelpoken": "Binnenkant Cosmetica",
