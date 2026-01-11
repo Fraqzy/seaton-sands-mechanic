@@ -33,7 +33,7 @@ const DEFAULTS = {
 
     extraOptions: [
         { name: "Fully tune", price: 30000, category: "Performance", enabled: true, favorite: true },
-        { name: "Raceharnas", price: 6000, category: "NOS items", enabled: true },
+        { name: "Raceharnas", price: 4000, category: "NOS items", enabled: true },
         { name: "Pops n' bangs", price: 2000, category: "NOS items", enabled: true },
         { name: "Voertuig armor", price: 2500, category: "NOS items", enabled: true },
         { name: "NOS", price: 3000, category: "NOS items", enabled: true },
