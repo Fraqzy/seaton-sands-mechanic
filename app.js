@@ -61,7 +61,6 @@ const DEFAULTS = {
       "Motorkappen": "Motorkap",
       "Sideskirts": "Skirts",
       "Skirts": "Skirts",
-      "Linker spatbord": "Skirts",
       "Linker Spatbord": "Skirts",
       "Rechter spatbord": "Skirts",
       "Rechter Spatbord": "Skirts",
