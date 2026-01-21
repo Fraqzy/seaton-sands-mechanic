@@ -62,7 +62,6 @@ const DEFAULTS = {
       "Sideskirts": "Skirts",
       "Skirts": "Skirts",
       "Linker Spatbord": "Skirts",
-      "Rechter spatbord": "Skirts",
       "Rechter Spatbord": "Skirts",
       "Rolkooien": "Rollcage",
       "Kenteken": "Aangepast Kenteken",
