@@ -87,6 +87,7 @@ const DEFAULTS = {
       "Schakelhendels": "Binnenkant Cosmetica",
       "Dashboards": "Binnenkant Cosmetica",
       "Speakers": "Binnenkant Cosmetica",
+      "Deurluidsprekers": "Binnenkant Cosmetica",
       "Meters": "Binnenkant Cosmetica",
       "Plaquettes": "Binnenkant Cosmetica",
       "Deurspeakers": "Binnenkant Cosmetica",
