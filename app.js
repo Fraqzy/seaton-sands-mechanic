@@ -71,6 +71,7 @@ const DEFAULTS = {
       "Vanity Plates": "Aangepast Kenteken",
       "Sierkentekens": "Aangepast Kenteken",
       "Wrap": "Bestickering",
+      "Livery": "Bestickering",
       "Afwerking B": "Buitenkant Cosmetica",
       "Afwerking A": "Buitenkant Cosmetica",
       "Brandstoftanks": "Buitenkant Cosmetica",
